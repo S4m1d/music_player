@@ -1,9 +1,24 @@
+#include <ao/ao.h>
 #include <dirent.h>
+#include <mpg123.h>
 #include <ncurses.h>
+#include <pthread.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+void *run_tui(void *arg);
+//int init_sound();
+
+int main() {
+  pthread_t t;
+
+  pthread_create(&t, NULL, run_tui, NULL);
+  pthread_join(t, NULL);
+
+  return 0;
+}
 
 int PL_WIDTH = 30;
 int PL_HEIGHT = 10;
@@ -16,7 +31,8 @@ void draw_cur_track(WINDOW *win, char *cur_track_name);
 
 char **scan_tracks(const char *path, const int page_size, int *tracks_count);
 
-int main() {
+void *run_tui(void *arg) {
+  (void)arg;
   WINDOW *pl_win;
   WINDOW *cur_track_win;
   int cur_hl_track_idx = 0;
@@ -25,7 +41,9 @@ int main() {
   int tracks_count;
   char **tracks = scan_tracks("assets", 10, &tracks_count);
   if (!tracks) {
-    return -1;
+    printf("failed to scan for tracks");
+    // TODO: return some other value on error
+    return NULL;
   }
 
   initscr();
@@ -91,8 +109,15 @@ int main() {
   }
   free(tracks);
 
-  return 0;
+  return NULL;
 }
+
+//int init_sound() {
+//  mpg123_init();
+//  ao_initialize();
+//
+//  return ao_driver_id("pulse");
+//}
 
 void draw_playlist(WINDOW *win, char *tracks[], int tracks_num,
                    int cur_track_idx) {
