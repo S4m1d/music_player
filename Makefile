@@ -1,7 +1,7 @@
 # Compiler & flags
 CC      := gcc
 CFLAGS  := -Wall -Wextra -pedantic -std=c11
-LDFLAGS := -lncurses
+LDFLAGS := -lncurses -lao -lmpg123
 
 # Directories
 SRC_DIR := src
