@@ -9,6 +9,6 @@ make
 - you can find executable after build under `./bin/app` path
 - load your playlist into `./assets/` directory, all tracks should be into mp3 format 
 ## Keybinds
-- j/k -- move up/down the list
+- k/j -- move up/down the list
 - p -- play selected track
 - q -- quit
